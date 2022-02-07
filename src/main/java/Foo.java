@@ -9,12 +9,10 @@ public class Foo extends Thread {
     }
 
     public String second() {
-
         return print("second");
     }
 
     public String third() {
-
         return print("third");
     }
 }
