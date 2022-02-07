@@ -1,14 +1,20 @@
-public class Foo {
+public class Foo extends Thread {
 
-    public void first(Runnable r) {
-        System.out.print("first");
+    private String print(String str) {
+        return str;
     }
 
-    public void second(Runnable r) {
-        System.out.print("second");
+    public String first() {
+        return print("first");
     }
 
-    public void third(Runnable r) {
-        System.out.print("third");
+    public String second() {
+
+        return print("second");
+    }
+
+    public String third() {
+
+        return print("third");
     }
 }

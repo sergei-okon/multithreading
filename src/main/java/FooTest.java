@@ -1,44 +1,28 @@
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class FooTest {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Foo foo = new Foo();
 
-        Runnable runnableA = new Runnable() {
-            @Override
-            public void run() {
-//                System.out.println("Current Thread Name- " + Thread.currentThread().getName());
-                foo.first(this);
-            }
-        };
+        CompletableFuture<String> future3
+                = CompletableFuture.supplyAsync(foo::third);
 
-        Runnable runnableB = new Runnable() {
-            @Override
-            public void run() {
-//                System.out.println("Current Thread Name- " + Thread.currentThread().getName());
-                foo.second(this);
-            }
-        };
+        CompletableFuture<String> future1
+                = CompletableFuture.supplyAsync(foo::first);
 
-        Runnable runnableC = new Runnable() {
-            @Override
-            public void run() {
-//                System.out.println("Current Thread Name- " + Thread.currentThread().getName());
-                foo.third(this);
-            }
-        };
+        CompletableFuture<String> future2
+                = CompletableFuture.supplyAsync(foo::second);
 
-        Thread threadA = new Thread(runnableA);
-        Thread threadB = new Thread(runnableB);
-        Thread threadC = new Thread(runnableC);
+        String combined = Stream.of(future1, future2, future3)
+                .map(CompletableFuture::join)
+                .collect(Collectors.joining());
 
-        threadA.start();
-        threadA.join();
+        System.out.println(combined);
 
-        threadB.start();
-        threadB.join();
-
-        threadC.start();
-        threadC.join();
     }
 }
+
 
